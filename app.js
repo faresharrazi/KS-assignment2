@@ -44,3 +44,4 @@ console.log('Refresh for a new round')
 
 
 // Step e: 
+console.log('Step e starts here')
