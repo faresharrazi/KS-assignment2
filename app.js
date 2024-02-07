@@ -8,9 +8,9 @@ function computerPlay() {
 }
 
 // Step b: Test the computerPlay function
-console.log("** This is a test **");
-console.log(computerPlay());
-console.log("** End of the test **");
+// console.log("** This is a test **");
+// console.log(computerPlay());
+// console.log("** End of the test **");
 
 // Step c and d:Function that plays one round of RPS
 function playRound(playerSelection, computerSelection) {
@@ -44,36 +44,76 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-// Test the playRound function
-const playerSelection = "rock"; // You can enter different values for testing
 const computerSelection = computerPlay(); // Using the previously defined computerPlay function
-console.log(playRound(playerSelection, computerSelection));
-console.log("Refresh for a new round");
 
 // Step e:
-console.log("Step e starts here");
-// prompt()
-const playerSelection = prompt(
+let playerSelection = prompt(
   `Input your choice! "Rock 🤜🏼" "Paper 👋🏼" "Scissors ✌🏼"`
 ).toLowerCase();
-switch (playerSelection) {
-  case "rock":
-    console.log(
-      `Your choice is ${playerSelection} and computer\'s choice is ${computerSelection}`
-    );
-    break;
-  case "paper":
-    console.log(
-      `Your choice is ${playerSelection} and computer\'s choice is ${computerSelection}`
-    );
-    break;
-  case "scissors":
-    console.log(
-      `Your choice is ${playerSelection} and computer\'s choice is ${computerSelection}`
-    );
-    break;
-  default:
-    console.log(
-      prompt(`Wrong input, try again! 🥴 "Rock 🤜🏼" "Paper 👋🏼" "Scissors ✌🏼"`)
-    );
+
+function playerSelectionValidation() {
+  switch (playerSelection) {
+    case "rock":
+      console.log(
+        `Your choice is ${playerSelection} and computer\'s choice is ${computerSelection}`
+      );
+      break;
+    case "paper":
+      console.log(
+        `Your choice is ${playerSelection} and computer\'s choice is ${computerSelection}`
+      );
+      break;
+    case "scissors":
+      console.log(
+        `Your choice is ${playerSelection} and computer\'s choice is ${computerSelection}`
+      );
+      break;
+    default:
+      console.log(
+        prompt(`Wrong input, try again! 🥴 "Rock 🤜🏼" "Paper 👋🏼" "Scissors ✌🏼"`)
+      );
+  }
 }
+
+playerSelectionValidation();
+
+function game() {
+  let userWin = 0;
+  let computerWin = 0;
+
+  for (let i = 0; i < 5; i++) {
+    console.log(`Round ${i + 1}`);
+    const resultLog = playRound(playerSelection, computerSelection);
+    console.log(resultLog);
+
+    if (resultLog.includes("You win!")) {
+      userWin += 1;
+    } else if (resultLog.includes("You lose!")) {
+      computerWin += 1;
+    }
+
+    if (i < 4) {
+      playerSelection = prompt(
+        `Input your choice! "Rock 🤜🏼" "Paper 👋🏼" "Scissors ✌🏼"`
+      ).toLowerCase();
+
+      playerSelectionValidation();
+    }
+  }
+
+  //final result
+  if (userWin > computerWin) {
+    console.log(
+      "%cYou won the GAME and saved the world 😀 You are a hero!",
+      "color: green; font-size: 16px"
+    );
+  } else if (userWin < computerWin) {
+    console.log(
+      "%cOh no, the computer won 😈 and will now take over the world",
+      "color: blue; font-size: 16px"
+    );
+  }
+  console.log("refresh the page to start a new game");
+}
+
+game();
