@@ -95,9 +95,12 @@ function game() {
       userWin += 1;
     } else if (resultLog.includes("You lose!")) {
       computerWin += 1;
+    } else if (resultLog.includes("It's a tie!")) {
+      userWin += 1;
+      computerWin += 1;
     }
   }
-
+  console.log(`Game score: ${userWin}:${computerWin}`);
   //final result
   if (userWin > computerWin) {
     console.log(
