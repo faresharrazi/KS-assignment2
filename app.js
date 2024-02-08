@@ -8,9 +8,9 @@ function computerPlay() {
 }
 
 // Step b: Test the computerPlay function
-console.log("** This is a test **");
-console.log(computerPlay());
-console.log("** End of the test **");
+// console.log("** This is a test **");
+// console.log(computerPlay());
+// console.log("** End of the test **");
 
 // Step c and d:Function that plays one round of RPS
 function playRound(playerSelection, computerSelection) {
@@ -44,11 +44,7 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-// Test the playRound function
-const playerSelection = "rock"; // You can enter different values for testing
 const computerSelection = computerPlay(); // Using the previously defined computerPlay function
-console.log(playRound(playerSelection, computerSelection));
-console.log("Refresh for a new round");
 
 // Step e:
 
