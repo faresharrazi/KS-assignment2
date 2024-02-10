@@ -7,7 +7,6 @@ function computerPlay() {
 }
 
 function playRound(playerSelection, computerSelection) {
-  playerSelection = playerSelection.toLowerCase();
   if (playerSelection === computerSelection) {
     return "It's a tie! Both chose [" + playerSelection + "].";
   } else if (
@@ -26,27 +25,45 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function inputValidation() {
-  let selection = prompt(`Input your choice! "Rock" "Paper" "Scissors"`);
+  const selection = prompt(`Input your choice! "Rock" "Paper" "Scissors"`);
+
+  // Handling the Cancellation Scenario: 
   if (selection === null) {
-    console.log("User canceled the game. 🥲");
-    return null;
-  }
-  selection = selection.toLowerCase();
-  while (
-    selection !== "rock" &&
-    selection !== "paper" &&
-    selection !== "scissors"
-  ) {
-    selection = prompt(
-      `Wrong input, try again!🥴 Please enter "Rock" "Paper" "Scissors"`
-    );
-    if (selection === null) {
-      console.log("User canceled the game.🥲");
-      return null;
+    const confirmation = prompt('Are you sure you want to exit the game? (Y/N)');
+    if (confirmation !== null && confirmation.toLowerCase().trim() === 'y') {
+      return null; // Exit if user confirms
+    } else {
+      return inputValidation(); // Recursively call inputValidation() again
     }
-    selection = selection.toLowerCase();
   }
-  return selection;
+
+  // Handling a non Cancelaltion Scenarios: 
+    const trimmedInput = selection.toLowerCase().trim();
+    if (trimmedInput === "") {
+      alert("You can't input an empty choice!");
+      return inputValidation(); // Recursively call inputValidation() again
+  } else if (["rock", "paper", "scissors"].includes(trimmedInput)) {
+      return trimmedInput;
+  } else {
+    alert(`Wrong input, try again!🥴 Please enter "Rock" "Paper" "Scissors"`);
+    return inputValidation(); // Recursively call inputValidation() again
+  }
+}
+
+function displayMessage (playerOne,playerTwo) {
+  console.log(`>>>> Game score: ${playerOne}:${playerTwo} <<<<`);
+  //final result
+  if (playerOne > playerTwo) {
+    console.log(
+      "%cYou won the GAME and saved the world 😀 You are a hero!",
+      "color: green; font-size: 16px"
+    );
+  } else if (playerOne < playerTwo) {
+    console.log(
+      "%cOh no, the computer won 😈 and will now take over the world",
+      "color: blue; font-size: 16px"
+    );
+  }
 }
 
 function game() {
@@ -72,24 +89,14 @@ function game() {
       userWin += 1;
     } else if (resultLog.includes("You lose!")) {
       computerWin += 1;
-    } else if (resultLog.includes("It's a tie!")) {
-      userWin += 1;
-      computerWin += 1;
+    }
+    // If one of the Players gets 3 points there is no need to continue the Game
+    if (userWin >= 3 || computerWin >=3) {
+      break;
     }
   }
-  console.log(`>>>> Game score: ${userWin}:${computerWin} <<<<`);
-  //final result
-  if (userWin > computerWin) {
-    console.log(
-      "%cYou won the GAME and saved the world 😀 You are a hero!",
-      "color: green; font-size: 16px"
-    );
-  } else if (userWin < computerWin) {
-    console.log(
-      "%cOh no, the computer won 😈 and will now take over the world",
-      "color: blue; font-size: 16px"
-    );
-  }
+  
+  displayMessage(userWin, computerWin);
   
 }
 game();
