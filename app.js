@@ -1,5 +1,12 @@
 console.log("Welcome to RPS GAME");
 
+let userWin = 0;
+let computerWin = 0;
+const resultDisplay = document.querySelector('.result');
+const refreshButton = document.querySelector('#refresh');
+console.log(refreshButton);
+const buttons = document.querySelectorAll('.selectbutton');
+
 function computerPlay() {
   const choices = ["rock", "paper", "scissors"];
   const randomIndex = Math.floor(Math.random() * choices.length);
@@ -14,90 +21,59 @@ function playRound(playerSelection, computerSelection) {
     (playerSelection === "paper" && computerSelection === "rock") ||
     (playerSelection === "scissors" && computerSelection === "paper")
   ) {
+    userWin += 1;
     return (
       "You win! [" + playerSelection + "] beats [" + computerSelection + "]."
     );
   } else {
+    computerWin += 1;
     return (
       "You lose! [" + computerSelection + "] beats [" + playerSelection + "]."
     );
   }
 }
 
-function inputValidation() {
-  const selection = prompt(`Input your choice! "Rock" "Paper" "Scissors"`);
+function displayResult(resultLog) {
+  const message = document.createElement('p');
+  message.textContent = resultLog;
+  resultDisplay.appendChild(message);
+}
 
-  // Handling the Cancellation Scenario: 
-  if (selection === null) {
-    const confirmation = prompt('Are you sure you want to exit the game? (Y/N)');
-    if (confirmation !== null && confirmation.toLowerCase().trim() === 'y') {
-      return null; // Exit if user confirms
+function displayScore() {
+  const scoreMessage = document.createElement('p');
+  scoreMessage.textContent = `Score: You ${userWin} - Computer ${computerWin}`;
+  resultDisplay.appendChild(scoreMessage);
+}
+
+function checkWinner() {
+  if (userWin >= 3 || computerWin >= 3) {
+    refreshButton.classList.remove('hidden'); // Remove the 'hidden' class
+    buttons.forEach(button => {
+      button.style.display = 'none';
+    });
+    const winnerMessage = document.createElement('p');
+    if (userWin >= 3) {
+      winnerMessage.textContent = "You won the game!";
     } else {
-      return inputValidation(); // Recursively call inputValidation() again
+      winnerMessage.textContent = "Computer won the game!";
     }
-  }
-
-  // Handling a non Cancelaltion Scenarios: 
-    const trimmedInput = selection.toLowerCase().trim();
-    if (trimmedInput === "") {
-      alert("You can't input an empty choice!");
-      return inputValidation(); // Recursively call inputValidation() again
-  } else if (["rock", "paper", "scissors"].includes(trimmedInput)) {
-      return trimmedInput;
-  } else {
-    alert(`Wrong input, try again!🥴 Please enter "Rock" "Paper" "Scissors"`);
-    return inputValidation(); // Recursively call inputValidation() again
+    resultDisplay.appendChild(winnerMessage);
   }
 }
 
-function displayMessage (playerOne,playerTwo) {
-  console.log(`>>>> Game score: ${playerOne}:${playerTwo} <<<<`);
-  //final result
-  if (playerOne > playerTwo) {
-    console.log(
-      "%cYou won the GAME and saved the world 😀 You are a hero!",
-      "color: green; font-size: 16px"
-    );
-  } else if (playerOne < playerTwo) {
-    console.log(
-      "%cOh no, the computer won 😈 and will now take over the world",
-      "color: blue; font-size: 16px"
-    );
-  }
+function handleClick(event) {
+  const playerSelection = event.target.id;
+  const computerSelection = computerPlay();
+  const resultLog = playRound(playerSelection, computerSelection);
+  displayResult(resultLog);
+  displayScore();
+  checkWinner();
 }
 
-function game() {
-  let userWin = 0;
-  let computerWin = 0;
+buttons.forEach(button => {
+  button.addEventListener('click', handleClick);
+});
 
-  for (let i = 0; i < 5; i++) {
-    console.log(`** Round ${i + 1} **`);
-    const playerSelection = inputValidation();
-
-    if (playerSelection === null) {
-      console.log("Game canceled.");
-      return;
-    }
-    const computerSelection = computerPlay();
-    console.log(
-      `Your choice is ${playerSelection} and computer\'s choice is ${computerSelection}`
-    );
-    const resultLog = playRound(playerSelection, computerSelection);
-    console.log(resultLog);
-
-    if (resultLog.includes("You win!")) {
-      userWin += 1;
-    } else if (resultLog.includes("You lose!")) {
-      computerWin += 1;
-    }
-    // If one of the Players gets 3 points there is no need to continue the Game
-    if (userWin >= 3 || computerWin >=3) {
-      break;
-    }
-  }
-  
-  displayMessage(userWin, computerWin);
-  
-}
-game();
-console.log("refresh the page to start a new game");
+refreshButton.addEventListener('click', () => {
+  location.reload();
+});
